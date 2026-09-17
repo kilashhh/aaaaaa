@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skala — барбершоп в Астане</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stone-950:#121110;
+    --stone-900:#1A1815;
+    --stone-800:#242019;
+    --stone-700:#332C22;
+    --stone-500:#6b6154;
+    --stone-300:#a79c8c;
+    --paper:#EDE7DC;
+    --paper-dim:#c9c1b2;
+    --rust:#B5602A;
+    --rust-light:#D98A4F;
+    --line: rgba(237,231,220,0.14);
+    --radius: 2px;
+  }
+  [data-theme="light-unused"]{}
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--stone-950);
+    color: var(--paper);
+    font-family:'Manrope', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  .h-display{
+    font-family:'Bebas Neue', 'Manrope', sans-serif;
+    font-weight:400;
+    letter-spacing:0.01em;
+    line-height:0.92;
+  }
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+  @media (max-width:640px){ .wrap{padding:0 18px;} }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background: rgba(18,17,16,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px; max-width:1120px; margin:0 auto;
+  }
+  .brand{ display:flex; align-items:baseline; gap:10px; }
+  .brand-mark{
+    font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:0.04em;
+  }
+  .brand-sub{ font-size:11px; letter-spacing:0.08em; color:var(--stone-300); text-transform:lowercase; }
+  nav.primary-nav{ display:flex; gap:28px; align-items:center; }
+  nav.primary-nav a{ font-size:14px; color:var(--paper-dim); transition:color .15s; }
+  nav.primary-nav a:hover{ color:var(--paper); }
+  .nav-cta{
+    background:var(--rust); color:var(--paper); padding:9px 18px;
+    font-size:14px; font-weight:700; border-radius:var(--radius);
+    transition: background .15s;
+  }
+  .nav-cta:hover{ background:var(--rust-light); }
+  .staff-link{ font-size:12px; color:var(--stone-500); }
+  .staff-link:hover{ color:var(--stone-300); }
+  .menu-toggle{ display:none; background:none; border:none; color:var(--paper); font-size:26px; cursor:pointer; }
+  @media (max-width:860px){
+    nav.primary-nav{ display:none; }
+    .menu-toggle{ display:block; }
+  }
+  .mobile-nav{
+    display:none; flex-direction:column; gap:0; border-top:1px solid var(--line);
+  }
+  .mobile-nav.open{ display:flex; }
+  .mobile-nav a{ padding:14px 24px; border-bottom:1px solid var(--line); font-size:15px; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:88px 0 0;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 78% 8%, rgba(181,96,42,0.16), transparent 55%),
+      var(--stone-950);
+  }
+  .hero-inner{
+    max-width:1120px; margin:0 auto; padding:64px 24px 0;
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:end;
+  }
+  @media (max-width:860px){ .hero-inner{ grid-template-columns:1fr; } }
+  .hero-eyebrow{
+    font-size:13px; color:var(--rust-light); font-weight:700; margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow .stars{ letter-spacing:2px; }
+  .hero h1{
+    font-size:clamp(56px, 9vw, 108px);
+    color:var(--paper);
+  }
+  .hero h1 em{ font-style:normal; color:var(--rust-light); }
+  .hero p.lead{
+    margin-top:22px; max-width:46ch; color:var(--paper-dim); font-size:17px;
+  }
+  .hero-actions{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px; font-size:15px; font-weight:700;
+    border-radius:var(--radius); border:1px solid transparent; cursor:pointer;
+  }
+  .btn-primary{ background:var(--rust); color:var(--paper); }
+  .btn-primary:hover{ background:var(--rust-light); }
+  .btn-ghost{ border-color:var(--line); color:var(--paper); }
+  .btn-ghost:hover{ border-color:var(--stone-300); }
+  .hero-stat-card{
+    background:var(--stone-900); border:1px solid var(--line);
+    padding:28px; align-self:end;
+  }
+  .hero-stat-card .num{ font-family:'Bebas Neue',sans-serif; font-size:54px; color:var(--rust-light); line-height:1; }
+  .hero-stat-card .label{ font-size:13px; color:var(--stone-300); margin-top:8px; }
+  .hero-stat-row{ display:flex; gap:0; margin-top:20px; border-top:1px solid var(--line); }
+  .hero-stat-row > div{ flex:1; padding:16px 0 0; }
+  .hero-stat-row .n{ font-size:20px; font-weight:800; color:var(--paper); }
+  .hero-stat-row .l{ font-size:12px; color:var(--stone-300); }
+
+  /* jagged rock divider */
+  .rockcut{
+    height:64px; width:100%;
+    margin-top:56px;
+    clip-path: polygon(0 100%, 4% 40%, 9% 70%, 15% 20%, 22% 55%, 29% 10%, 36% 48%, 44% 0%, 52% 42%, 60% 15%, 68% 58%, 76% 25%, 84% 62%, 92% 30%, 100% 50%, 100% 100%);
+    background: var(--stone-800);
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding:76px 0; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:40px; flex-wrap:wrap; }
+  .section-head h2{ font-size:clamp(34px,5vw,52px); color:var(--paper); }
+  .section-head p{ color:var(--stone-300); max-width:38ch; font-size:14.5px; }
+  .kicker{ font-size:12.5px; color:var(--rust-light); font-weight:700; margin-bottom:10px; }
+
+  /* ---------- services (menu style, not cards) ---------- */
+  .services{ background:var(--stone-900); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .service-list{ border-top:1px solid var(--line); }
+  .service-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:22px 0; border-bottom:1px solid var(--line); gap:20px;
+  }
+  .service-row .name{ font-size:19px; font-weight:700; color:var(--paper); }
+  .service-row .desc{ font-size:13.5px; color:var(--stone-300); margin-top:4px; max-width:52ch; }
+  .service-row .price{
+    font-family:'Bebas Neue',sans-serif; font-size:26px; color:var(--rust-light); white-space:nowrap;
+  }
+  .service-row .price small{ font-family:'Manrope',sans-serif; font-size:12px; color:var(--stone-300); }
+
+  /* ---------- why / features ---------- */
+  .feature-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media (max-width:860px){ .feature-grid{ grid-template-columns:repeat(2,1fr);} }
+  .feature{ background:var(--stone-950); padding:28px 22px; }
+  .feature .ico{ font-size:22px; margin-bottom:14px; }
+  .feature h3{ font-size:16px; color:var(--paper); margin-bottom:6px; }
+  .feature p{ font-size:13px; color:var(--stone-300); }
+
+  /* ---------- booking ---------- */
+  .booking{ background:var(--stone-950); }
+  .booking-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  @media (max-width:860px){ .booking-grid{ grid-template-columns:1fr; } }
+  .booking-info h2{ font-size:clamp(32px,5vw,46px); margin-bottom:16px; }
+  .booking-info p{ color:var(--stone-300); margin-bottom:28px; max-width:42ch; }
+  .info-line{ display:flex; gap:14px; padding:14px 0; border-top:1px solid var(--line); }
+  .info-line:last-child{ border-bottom:1px solid var(--line); }
+  .info-line .k{ width:110px; flex-shrink:0; font-size:12.5px; color:var(--stone-300); text-transform:uppercase; letter-spacing:.04em; }
+  .info-line .v{ font-size:14.5px; color:var(--paper); }
+  .info-line .v a{ color:var(--rust-light); }
+
+  form.booking-form{ background:var(--stone-900); border:1px solid var(--line); padding:32px; }
+  .form-row{ margin-bottom:18px; }
+  .form-row label{ display:block; font-size:12.5px; color:var(--stone-300); margin-bottom:7px; text-transform:uppercase; letter-spacing:.04em; }
+  .form-row input, .form-row select, .form-row textarea{
+    width:100%; background:var(--stone-800); border:1px solid var(--line); color:var(--paper);
+    padding:13px 14px; font-size:15px; font-family:'Manrope',sans-serif; border-radius:var(--radius);
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus{
+    outline:2px solid var(--rust-light); outline-offset:1px; border-color:transparent;
+  }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .form-submit{ width:100%; justify-content:center; margin-top:6px; font-size:16px; padding:15px; }
+  .form-note{ font-size:12px; color:var(--stone-500); margin-top:12px; text-align:center; }
+  .confirm-box{
+    display:none; background:var(--stone-800); border:1px solid var(--rust); padding:22px; margin-top:18px;
+  }
+  .confirm-box.show{ display:block; }
+  .confirm-box h4{ color:var(--rust-light); font-size:15px; margin-bottom:6px; }
+  .confirm-box p{ font-size:13.5px; color:var(--paper-dim); }
+
+  /* ---------- map / location ---------- */
+  .location{ background:var(--stone-900); border-top:1px solid var(--line); }
+  .location-grid{ display:grid; grid-template-columns:1.2fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:40px; }
+  @media (max-width:860px){ .location-grid{ grid-template-columns:1fr; } }
+  .location-panel{ background:var(--stone-950); padding:32px; }
+  .location-panel h3{ font-size:18px; margin-bottom:14px; color:var(--paper); }
+  .stop-row{ display:flex; justify-content:space-between; font-size:13.5px; color:var(--stone-300); padding:9px 0; border-top:1px solid var(--line); }
+  .map-embed{ min-height:340px; background:var(--stone-800); display:flex; align-items:center; justify-content:center; }
+  .map-embed a.mapbtn{ background:var(--rust); color:var(--paper); padding:13px 22px; font-weight:700; font-size:14px; border-radius:var(--radius); }
+
+  footer{ padding:40px 0 60px; border-top:1px solid var(--line); }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .footer-row .fbrand{ font-family:'Bebas Neue',sans-serif; font-size:22px; }
+  .footer-links{ display:flex; gap:22px; font-size:13px; color:var(--stone-300); }
+  .footer-links a:hover{ color:var(--paper); }
+  .footer-fine{ margin-top:22px; font-size:12px; color:var(--stone-500); }
+
+  /* ================= STAFF PANEL ================= */
+  #staffView{ display:none; min-height:100vh; background:var(--stone-950); }
+  #staffView.show{ display:block; }
+  #clientView.hide{ display:none; }
+
+  .staff-gate{
+    max-width:380px; margin:14vh auto; background:var(--stone-900); border:1px solid var(--line);
+    padding:34px; text-align:center;
+  }
+  .staff-gate .h-display{ font-size:30px; margin-bottom:6px; }
+  .staff-gate p{ color:var(--stone-300); font-size:13.5px; margin-bottom:22px; }
+  .staff-gate input{
+    width:100%; background:var(--stone-800); border:1px solid var(--line); color:var(--paper);
+    padding:13px 14px; font-size:15px; text-align:center; letter-spacing:.2em; margin-bottom:14px; border-radius:var(--radius);
+  }
+  .staff-gate .err{ color:var(--rust-light); font-size:12.5px; margin-top:10px; display:none; }
+  .staff-gate .hint{ margin-top:16px; font-size:11.5px; color:var(--stone-500); }
+
+  .staff-app{ display:none; }
+  .staff-app.show{ display:block; }
+  .staff-topbar{
+    display:flex; justify-content:space-between; align-items:center; padding:18px 24px;
+    border-bottom:1px solid var(--line); background:var(--stone-900);
+  }
+  .staff-topbar .h-display{ font-size:24px; }
+  .staff-topbar .exit{ font-size:13px; color:var(--stone-300); border:1px solid var(--line); padding:8px 16px; border-radius:var(--radius); }
+  .staff-topbar .exit:hover{ color:var(--paper); border-color:var(--stone-300); }
+
+  .staff-body{ max-width:1120px; margin:0 auto; padding:32px 24px 80px; }
+  .staff-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:36px; }
+  @media (max-width:700px){ .staff-stats{ grid-template-columns:repeat(2,1fr);} }
+  .staff-stat{ background:var(--stone-900); padding:20px; }
+  .staff-stat .n{ font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--rust-light); }
+  .staff-stat .l{ font-size:12px; color:var(--stone-300); margin-top:2px; }
+
+  .staff-controls{ display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+  .filter-tabs{ display:flex; gap:0; border:1px solid var(--line); }
+  .filter-tabs button{
+    background:none; border:none; color:var(--stone-300); padding:9px 16px; font-size:13px; cursor:pointer; border-right:1px solid var(--line);
+  }
+  .filter-tabs button:last-child{ border-right:none; }
+  .filter-tabs button.active{ background:var(--rust); color:var(--paper); }
+  .staff-controls input[type=date]{
+    background:var(--stone-800); border:1px solid var(--line); color:var(--paper); padding:9px 12px; font-size:13px; border-radius:var(--radius);
+  }
+
+  .booking-table{ width:100%; border-collapse:collapse; }
+  .booking-table thead th{
+    text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--stone-300);
+    padding:10px 12px; border-bottom:1px solid var(--line);
+  }
+  .booking-table tbody td{ padding:14px 12px; border-bottom:1px solid var(--line); font-size:14px; vertical-align:top; }
+  .booking-table tbody tr:hover{ background:var(--stone-900); }
+  .status-pill{ font-size:11.5px; padding:4px 10px; border-radius:20px; display:inline-block; font-weight:700; }
+  .status-new{ background:rgba(181,96,42,0.22); color:var(--rust-light); }
+  .status-confirmed{ background:rgba(90,140,90,0.22); color:#8fc98f; }
+  .status-done{ background:rgba(160,160,160,0.18); color:var(--stone-300); }
+  .status-cancelled{ background:rgba(160,60,60,0.2); color:#d98a8a; text-decoration:line-through; }
+  .row-actions{ display:flex; gap:6px; flex-wrap:wrap; }
+  .row-actions button{
+    font-size:11.5px; padding:5px 10px; background:var(--stone-800); border:1px solid var(--line); color:var(--paper-dim);
+    border-radius:var(--radius); cursor:pointer;
+  }
+  .row-actions button:hover{ border-color:var(--stone-300); color:var(--paper); }
+  .empty-state{ padding:60px 20px; text-align:center; color:var(--stone-300); font-size:14px; }
+
+  .staff-addbar{ margin-top:36px; padding-top:28px; border-top:1px solid var(--line); }
+  .staff-addbar h3{ font-size:17px; margin-bottom:16px; }
+  .add-walkin-form{ display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr auto; gap:10px; }
+  @media (max-width:860px){ .add-walkin-form{ grid-template-columns:1fr 1fr; } }
+  .add-walkin-form input, .add-walkin-form select{
+    background:var(--stone-800); border:1px solid var(--line); color:var(--paper); padding:11px 12px; font-size:13.5px; border-radius:var(--radius);
+  }
+  .add-walkin-form button{ background:var(--rust); color:var(--paper); border:none; padding:11px 18px; font-weight:700; font-size:13.5px; border-radius:var(--radius); cursor:pointer; }
+  .add-walkin-form button:hover{ background:var(--rust-light); }
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--stone-800); border:1px solid var(--rust); color:var(--paper);
+    padding:13px 22px; font-size:13.5px; border-radius:var(--radius); opacity:0; pointer-events:none;
+    transition:opacity .2s, transform .2s; z-index:80;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<!-- ============ CLIENT SITE ============ -->
+<div id="clientView">
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">SKALA</span>
+        <span class="brand-sub">барбершоп · Астана</span>
+      </div>
+      <nav class="primary-nav">
+        <a href="#services">Услуги и цены</a>
+        <a href="#booking">Записаться</a>
+        <a href="#location">Где мы</a>
+        <a href="#booking" class="nav-cta">Записаться</a>
+        <a href="#" class="staff-link" id="openStaffLink">панель мастера</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Меню">☰</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#services">Услуги и цены</a>
+      <a href="#booking">Записаться</a>
+      <a href="#location">Где мы</a>
+      <a href="#" id="openStaffLinkMobile">Панель мастера</a>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow"><span class="stars">★★★★★</span> 5.0 · 211 отзывов на 2ГИС</div>
+        <h1 class="h-display">Стрижка,<br>высечен<em>ная</em><br>точно.</h1>
+        <p class="lead">SKALA — мужской барбершоп в Сарайшыкском районе Астаны. Классические и современные стрижки, детские стрижки, химзавивка и уход — без спешки и без компромиссов.</p>
+        <div class="hero-actions">
+          <a href="#booking" class="btn btn-primary">Записаться онлайн</a>
+          <a href="tel:+77776998333" class="btn btn-ghost">Позвонить</a>
+        </div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="num">от 5000 ₸</div>
+        <div class="label">мужская стрижка</div>
+        <div class="hero-stat-row">
+          <div><div class="n">70</div><div class="l">мест парковки</div></div>
+          <div><div class="n">10:00</div><div class="l">открытие завтра</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="rockcut"></div>
+  </header>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Прайс-лист</div>
+          <h2 class="h-display">Услуги</h2>
+        </div>
+        <p>Точные цены на отдельные услуги уточняйте у мастера при записи — прайс может отличаться по типу стрижки и длине волос.</p>
+      </div>
+      <div class="service-list" id="serviceList">
+        <!-- rows injected by JS from SERVICES -->
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Почему SKALA</div>
+          <h2 class="h-display">Детали, которые держат</h2>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="feature-grid">
+        <div class="feature"><div class="ico">🚗</div><h3>Бесплатная парковка</h3><p>70 мест прямо у входа — приезжайте на своей машине.</p></div>
+        <div class="feature"><div class="ico">📶</div><h3>Wi-Fi для клиентов</h3><p>Работайте или листайте ленту, пока ждёте своего мастера.</p></div>
+        <div class="feature"><div class="ico">💳</div><h3>Любой способ оплаты</h3><p>Карта, наличные, перевод или оплата по QR-коду.</p></div>
+        <div class="feature"><div class="ico">🏠</div><h3>Выезд на дом</h3><p>Мастер приедет к вам, если удобнее подстричься дома.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking" id="booking">
+    <div class="wrap">
+      <div class="booking-grid">
+        <div class="booking-info">
+          <div class="kicker">Онлайн-запись</div>
+          <h2 class="h-display">Забронируйте время</h2>
+          <p>Заполните форму — мастер свяжется с вами для подтверждения. Либо напишите сразу в WhatsApp или Instagram.</p>
+
+          <div class="info-line"><div class="k">Адрес</div><div class="v">ул. Жумекен Нажимеденов, 54, Сарайшык район, Астана</div></div>
+          <div class="info-line"><div class="k">Телефон</div><div class="v"><a href="tel:+77776998333">+7 777 699 8333</a></div></div>
+          <div class="info-line"><div class="k">WhatsApp</div><div class="v"><a href="https://wa.me/77776998333" target="_blank" rel="noopener">Написать в WhatsApp</a></div></div>
+          <div class="info-line"><div class="k">Instagram</div><div class="v"><a href="https://instagram.com/skala.kz" target="_blank" rel="noopener">@skala.kz</a></div></div>
+          <div class="info-line"><div class="k">Сегодня</div><div class="v">Закрыто · открываемся завтра в 10:00</div></div>
+        </div>
+
+        <div>
+          <form class="booking-form" id="bookingForm">
+            <div class="form-row">
+              <label for="bf-name">Имя</label>
+              <input type="text" id="bf-name" required placeholder="Как к вам обращаться">
+            </div>
+            <div class="form-row">
+              <label for="bf-phone">Телефон</label>
+              <input type="tel" id="bf-phone" required placeholder="+7 ___ ___ __ __">
+            </div>
+            <div class="form-row">
+              <label for="bf-service">Услуга</label>
+              <select id="bf-service" required></select>
+            </div>
+            <div class="two-col">
+              <div class="form-row">
+                <label for="bf-date">Дата</label>
+                <input type="date" id="bf-date" required>
+              </div>
+              <div class="form-row">
+                <label for="bf-time">Время</label>
+                <input type="time" id="bf-time" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="bf-note">Комментарий (необязательно)</label>
+              <textarea id="bf-note" rows="2" placeholder="Пожелания к стрижке, удобное время и т.д."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary form-submit">Отправить заявку</button>
+            <div class="form-note">Заявка сразу появится у администратора. Подтверждение — по телефону.</div>
+            <div class="confirm-box" id="confirmBox">
+              <h4>Заявка отправлена</h4>
+              <p id="confirmText"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="location" id="location">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Как добраться</div>
+          <h2 class="h-display">Мы находимся здесь</h2>
+        </div>
+      </div>
+      <div class="location-grid">
+        <div class="map-embed">
+          <a class="mapbtn" href="https://2gis.kz/astana/firm/70000001110073246" target="_blank" rel="noopener">Открыть на карте 2ГИС →</a>
+        </div>
+        <div class="location-panel">
+          <h3>Остановки транспорта</h3>
+          <div class="stop-row"><span>Нурлы жол</span><span>5 мин · 400 м</span></div>
+          <div class="stop-row"><span>Жибек жолы</span><span>10 мин · 900 м</span></div>
+          <div class="stop-row"><span>Парковка у барбершопа</span><span>70 мест, бесплатно</span></div>
+          <div class="stop-row"><span>Оплата</span><span>карта · наличные · QR · перевод</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-row">
+        <div class="fbrand h-display">SKALA</div>
+        <div class="footer-links">
+          <a href="tel:+77776998333">+7 777 699 8333</a>
+          <a href="https://instagram.com/skala.kz" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://wa.me/77776998333" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://2gis.kz/astana/firm/70000001110073246" target="_blank" rel="noopener">2ГИС</a>
+        </div>
+      </div>
+      <div class="footer-fine">SKALA · барбершоп · ул. Жумекен Нажимеденов, 54, Астана</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============ STAFF PANEL ============ -->
+<div id="staffView">
+
+  <div class="staff-gate" id="staffGate">
+    <div class="h-display">SKALA · Персонал</div>
+    <p>Введите код доступа администратора, чтобы открыть панель записей.</p>
+    <input type="password" id="gateCode" placeholder="Код доступа" maxlength="10">
+    <button class="btn btn-primary" style="width:100%;justify-content:center" id="gateSubmit">Войти</button>
+    <div class="err" id="gateErr">Неверный код. Попробуйте ещё раз.</div>
+    <div class="hint">Демо-код: <strong>skala2026</strong> — замените на свой перед запуском в работу.</div>
+    <div class="hint"><a href="#" id="backToSite" style="color:var(--stone-300)">← Вернуться на сайт</a></div>
+  </div>
+
+  <div class="staff-app" id="staffApp">
+    <div class="staff-topbar">
+      <div class="h-display">SKALA · Панель мастера</div>
+      <a href="#" class="exit" id="exitStaff">Выйти на сайт</a>
+    </div>
+
+    <div class="staff-body">
+      <div class="staff-stats">
+        <div class="staff-stat"><div class="n" id="statToday">0</div><div class="l">записей сегодня</div></div>
+        <div class="staff-stat"><div class="n" id="statNew">0</div><div class="l">новых заявок</div></div>
+        <div class="staff-stat"><div class="n" id="statWeek">0</div><div class="l">записей за 7 дней</div></div>
+        <div class="staff-stat"><div class="n" id="statDone">0</div><div class="l">выполнено всего</div></div>
+      </div>
+
+      <div class="staff-controls">
+        <div class="filter-tabs" id="filterTabs">
+          <button data-filter="all" class="active">Все</button>
+          <button data-filter="new">Новые</button>
+          <button data-filter="confirmed">Подтверждены</button>
+          <button data-filter="done">Выполнены</button>
+          <button data-filter="cancelled">Отменены</button>
+        </div>
+        <input type="date" id="dateFilter">
+      </div>
+
+      <table class="booking-table">
+        <thead>
+          <tr>
+            <th>Клиент</th>
+            <th>Услуга</th>
+            <th>Дата / время</th>
+            <th>Статус</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="bookingTbody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none;">Записей пока нет — они появятся здесь сразу после отправки заявки с сайта.</div>
+
+      <div class="staff-addbar">
+        <h3>Добавить запись вручную (walk-in / по звонку)</h3>
+        <form class="add-walkin-form" id="walkinForm">
+          <input type="text" id="wf-name" placeholder="Имя клиента" required>
+          <input type="tel" id="wf-phone" placeholder="Телефон" required>
+          <select id="wf-service" required></select>
+          <input type="datetime-local" id="wf-datetime" required>
+          <button type="submit">Добавить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SERVICES = [
+    {id:"haircut", name:"Мужская стрижка", desc:"Классика или современная форма, по вашему запросу.", price:"от 5000 ₸"},
+    {id:"kids", name:"Детская стрижка", desc:"Аккуратно и терпеливо, для юных клиентов.", price:"по прайсу"},
+    {id:"perm", name:"Мужская химическая завивка", desc:"Долговременная укладка для объёма и текстуры.", price:"по прайсу"},
+    {id:"manicure", name:"Мужской маникюр", desc:"Уход за руками в барбершопе.", price:"по прайсу"},
+    {id:"pedicure", name:"Мужской педикюр", desc:"Комплексный уход за ногами.", price:"по прайсу"},
+    {id:"homevisit", name:"Выезд мастера на дом", desc:"Стрижка у вас дома или в офисе.", price:"по договорённости"}
+  ];
+
+  var STORE_KEY = "skala_bookings_v1";
+  var STATUS_LABEL = {new:"Новая", confirmed:"Подтверждена", done:"Выполнена", cancelled:"Отменена"};
+
+  function loadBookings(){
+    try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); }
+    catch(e){ return []; }
+  }
+  function saveBookings(list){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(list)); }catch(e){}
+  }
+  function uid(){ return "bk_" + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  function serviceName(id){
+    var s = SERVICES.filter(function(x){return x.id===id;})[0];
+    return s ? s.name : id;
+  }
+
+  /* ---------- render client service list ---------- */
+  function renderServiceList(){
+    var el = document.getElementById("serviceList");
+    el.innerHTML = SERVICES.map(function(s){
+      return '<div class="service-row">' +
+        '<div><div class="name">'+s.name+'</div><div class="desc">'+s.desc+'</div></div>' +
+        '<div class="price">'+s.price+'</div>' +
+        '</div>';
+    }).join("");
+  }
+
+  function populateServiceSelects(){
+    var opts = SERVICES.map(function(s){ return '<option value="'+s.id+'">'+s.name+'</option>'; }).join("");
+    document.getElementById("bf-service").innerHTML = opts;
+    document.getElementById("wf-service").innerHTML = opts;
+  }
+
+  /* ---------- mobile nav ---------- */
+  document.getElementById("menuToggle").addEventListener("click", function(){
+    document.getElementById("mobileNav").classList.toggle("open");
+  });
+  document.querySelectorAll(".mobile-nav a").forEach(function(a){
+    a.addEventListener("click", function(){ document.getElementById("mobileNav").classList.remove("open"); });
+  });
+
+  /* ---------- booking form ---------- */
+  document.getElementById("bookingForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var b = {
+      id: uid(),
+      name: document.getElementById("bf-name").value.trim(),
+      phone: document.getElementById("bf-phone").value.trim(),
+      serviceId: document.getElementById("bf-service").value,
+      date: document.getElementById("bf-date").value,
+      time: document.getElementById("bf-time").value,
+      note: document.getElementById("bf-note").value.trim(),
+      status: "new",
+      source: "сайт",
+      createdAt: new Date().toISOString()
+    };
+    var list = loadBookings();
+    list.push(b);
+    saveBookings(list);
+
+    var box = document.getElementById("confirmBox");
+    document.getElementById("confirmText").textContent =
+      b.name + ", заявка на «" + serviceName(b.serviceId) + "» на " + (b.date||"—") + " " + (b.time||"") + " принята. Мы позвоним вам на " + b.phone + " для подтверждения.";
+    box.classList.add("show");
+    this.reset();
+    populateServiceSelects();
+  });
+
+  /* ---------- staff gate ---------- */
+  var PASSCODE = "skala2026";
+  function openStaff(){
+    document.getElementById("clientView").classList.add("hide");
+    document.getElementById("staffView").classList.add("show");
+    document.getElementById("mobileNav").classList.remove("open");
+  }
+  function closeStaff(){
+    document.getElementById("clientView").classList.remove("hide");
+    document.getElementById("staffView").classList.remove("show");
+    document.getElementById("staffApp").classList.remove("show");
+    document.getElementById("staffGate").style.display = "block";
+    document.getElementById("gateCode").value = "";
+    document.getElementById("gateErr").style.display = "none";
+  }
+  document.getElementById("openStaffLink").addEventListener("click", function(e){ e.preventDefault(); openStaff(); });
+  document.getElementById("openStaffLinkMobile").addEventListener("click", function(e){ e.preventDefault(); openStaff(); });
+  document.getElementById("exitStaff").addEventListener("click", function(e){ e.preventDefault(); closeStaff(); });
+  document.getElementById("backToSite").addEventListener("click", function(e){ e.preventDefault(); closeStaff(); });
+
+  document.getElementById("gateSubmit").addEventListener("click", tryGate);
+  document.getElementById("gateCode").addEventListener("keydown", function(e){ if(e.key==="Enter") tryGate(); });
+  function tryGate(){
+    var val = document.getElementById("gateCode").value.trim();
+    if(val === PASSCODE){
+      document.getElementById("staffGate").style.display = "none";
+      document.getElementById("staffApp").classList.add("show");
+      renderStaffApp();
+    } else {
+      document.getElementById("gateErr").style.display = "block";
+    }
+  }
+
+  /* ---------- staff app ---------- */
+  var currentFilter = "all";
+
+  function statusOf(list, status){ return list.filter(function(b){return b.status===status;}); }
+
+  function isToday(dateStr){
+    if(!dateStr) return false;
+    var d = new Date(); var today = d.toISOString().slice(0,10);
+    return dateStr === today;
+  }
+  function isWithinDays(dateStr, days){
+    if(!dateStr) return false;
+    var d = new Date(dateStr + "T00:00:00");
+    var now = new Date(); now.setHours(0,0,0,0);
+    var diff = (d - now) / 86400000;
+    return diff >= 0 && diff < days;
+  }
+
+  function renderStats(list){
+    document.getElementById("statToday").textContent = list.filter(function(b){return isToday(b.date);}).length;
+    document.getElementById("statNew").textContent = statusOf(list,"new").length;
+    document.getElementById("statWeek").textContent = list.filter(function(b){return isWithinDays(b.date,7);}).length;
+    document.getElementById("statDone").textContent = statusOf(list,"done").length;
+  }
+
+  function renderTable(){
+    var list = loadBookings();
+    renderStats(list);
+
+    var dateVal = document.getElementById("dateFilter").value;
+    var filtered = list.filter(function(b){
+      if(currentFilter !== "all" && b.status !== currentFilter) return false;
+      if(dateVal && b.date !== dateVal) return false;
+      return true;
+    });
+    filtered.sort(function(a,b){
+      var da = (a.date||"") + "T" + (a.time||"00:00");
+      var db = (b.date||"") + "T" + (b.time||"00:00");
+      return da.localeCompare(db);
+    });
+
+    var tbody = document.getElementById("bookingTbody");
+    var empty = document.getElementById("emptyState");
+    if(filtered.length === 0){
+      tbody.innerHTML = "";
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+
+    tbody.innerHTML = filtered.map(function(b){
+      var actions = "";
+      if(b.status === "new") actions += '<button data-act="confirm" data-id="'+b.id+'">Подтвердить</button>';
+      if(b.status === "new" || b.status === "confirmed") actions += '<button data-act="done" data-id="'+b.id+'">Выполнено</button>';
+      if(b.status !== "cancelled" && b.status !== "done") actions += '<button data-act="cancel" data-id="'+b.id+'">Отменить</button>';
+      actions += '<button data-act="delete" data-id="'+b.id+'">Удалить</button>';
+
+      return '<tr>' +
+        '<td><strong>'+escapeHtml(b.name||"—")+'</strong><br><span style="color:var(--stone-300);font-size:12.5px">'+escapeHtml(b.phone||"")+'</span></td>' +
+        '<td>'+escapeHtml(serviceName(b.serviceId))+(b.note ? '<br><span style="color:var(--stone-300);font-size:12px">'+escapeHtml(b.note)+'</span>' : '')+'</td>' +
+        '<td>'+(b.date||"—")+' '+(b.time||b.datetime||"")+'<br><span style="color:var(--stone-500);font-size:11.5px">'+(b.source||"—")+'</span></td>' +
+        '<td><span class="status-pill status-'+b.status+'">'+STATUS_LABEL[b.status]+'</span></td>' +
+        '<td><div class="row-actions">'+actions+'</div></td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  document.getElementById("bookingTbody").addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-act]");
+    if(!btn) return;
+    var id = btn.getAttribute("data-id");
+    var act = btn.getAttribute("data-act");
+    var list = loadBookings();
+    var idx = list.findIndex(function(b){return b.id===id;});
+    if(idx === -1) return;
+
+    if(act === "confirm"){ list[idx].status = "confirmed"; showToast("Заявка подтверждена"); }
+    else if(act === "done"){ list[idx].status = "done"; showToast("Отмечено как выполнено"); }
+    else if(act === "cancel"){ list[idx].status = "cancelled"; showToast("Запись отменена"); }
+    else if(act === "delete"){
+      if(!confirm("Удалить эту запись без возможности восстановления?")) return;
+      list.splice(idx,1);
+      showToast("Запись удалена");
+    }
+    saveBookings(list);
+    renderTable();
+  });
+
+  document.getElementById("filterTabs").addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-filter]");
+    if(!btn) return;
+    currentFilter = btn.getAttribute("data-filter");
+    document.querySelectorAll("#filterTabs button").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    renderTable();
+  });
+  document.getElementById("dateFilter").addEventListener("change", renderTable);
+
+  document.getElementById("walkinForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var dt = document.getElementById("wf-datetime").value; // "YYYY-MM-DDTHH:MM"
+    var parts = dt.split("T");
+    var b = {
+      id: uid(),
+      name: document.getElementById("wf-name").value.trim(),
+      phone: document.getElementById("wf-phone").value.trim(),
+      serviceId: document.getElementById("wf-service").value,
+      date: parts[0] || "",
+      time: parts[1] || "",
+      note: "",
+      status: "confirmed",
+      source: "вручную",
+      createdAt: new Date().toISOString()
+    };
+    var list = loadBookings();
+    list.push(b);
+    saveBookings(list);
+    this.reset();
+    populateServiceSelects();
+    showToast("Запись добавлена");
+    renderTable();
+  });
+
+  var toastTimer;
+  function showToast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2400);
+  }
+
+  function renderStaffApp(){
+    renderTable();
+  }
+
+  /* ---------- init ---------- */
+  renderServiceList();
+  populateServiceSelects();
+  // default booking date to tomorrow
+  (function(){
+    var d = new Date(); d.setDate(d.getDate()+1);
+    document.getElementById("bf-date").min = new Date().toISOString().slice(0,10);
+    document.getElementById("bf-date").value = d.toISOString().slice(0,10);
+  })();
+
+})();
+</script>
+</body>
+</html>
